@@ -16,12 +16,6 @@ async function main() {
     const mintRc = await mintTx.wait();
     console.log(mintRc);
 
-    
-    
-    
-
-    
-
 
 
 }

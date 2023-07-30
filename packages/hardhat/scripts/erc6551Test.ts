@@ -1,7 +1,7 @@
 import { ethers } from 'hardhat'
 import registry from '../deployments/cronos_testnet/ERC6551Registry.json';
 import account from '../deployments/cronos_testnet/ERC6551Account.json'
-import ERC1155Token from '../deployments/cronos_testnet/ERC1155Token.json'
+import ERC721Token from '../deployments/cronos_testnet/ERC721Token.json'
 
 const provider = new ethers.providers.JsonRpcProvider(
     "https://evm-t3.cronos.org/"
@@ -14,10 +14,10 @@ async function main() {
     const registryContract = new ethers.Contract(registry.address, registry.abi, ethersSigner);
     const createTx = await registryContract.createAccount(
         account.address, 
-        338, 
-        ERC1155Token.address, 
-        1, 
-        0, 
+        338, //chain ID
+        ERC721Token.address, 
+        1, // Token ID
+        0, // salt
         []
         );
 
@@ -25,18 +25,19 @@ async function main() {
     //console.log(createRc);
 
     const addr = await registryContract.account(account.address, 
-        338, 
-        ERC1155Token.address, 
-        1, 
-        0)
+        338, //chain ID
+        ERC721Token.address, 
+        1, // Token ID
+        0 // salt
+        )
     
     console.log("Account address: ", addr);
-    /* const accountContract = new ethers.Contract(addr, account.abi, ethersSigner);
+    const accountContract = new ethers.Contract(addr, account.abi, ethersSigner);
     const result = await accountContract.token();
     const owner = await accountContract.owner();
     console.log("token(): ", result);
     console.log("owner(): ", owner);
- */
+
     
 
 
