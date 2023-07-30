@@ -24,15 +24,18 @@ const deployYourContract: DeployFunction = async function (hre: HardhatRuntimeEn
   const deployer = await provider.getSigner().getAddress();
   const { deploy } = hre.deployments;
 
-  /* await deploy("ERC1155Token", {
+  const registry = await hre.deployments.get('ERC6551Registry');
+  const account = await hre.deployments.get('ERC6551Account');
+
+  await deploy("Factory", {
     from: deployer,
     // Contract constructor arguments
-    args: [],
+    args: [registry.address, account.address],
     log: true,
     // autoMine: can be passed to the deploy function to make the deployment process faster on local networks by
     // automatically mining the contract deployment transaction. There is no effect on live networks.
     autoMine: true,
-  }); */
+  });
 
   // Get the deployed contract
   // const yourContract = await hre.ethers.getContract("YourContract", deployer);
@@ -42,4 +45,4 @@ export default deployYourContract;
 
 // Tags are useful if you have multiple deploy files and only want to run one of them.
 // e.g. yarn deploy --tags YourContract
-deployYourContract.tags = ["ERC1155Token"];
+deployYourContract.tags = ["Factory"];
